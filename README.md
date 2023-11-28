@@ -3,7 +3,14 @@ group project 1 for bootcamp
 
 ## description
 
-a searchable database for marvel comics or perhaps a larger scope of comic brands that presents user with a brief summary and maybe collection of images of a related search including links to related wikipedia page
+AS a Marvel fan
+I WANT to search for information about any character in the Marvel universe
+so THAT I can learn more about that character
+
+WHEN I go to an app
+THEN there is a search bar and button
+WHEN I enter a search term and click the button
+THEN I am presented with a short bio, first appearance, and image of my search term and a wikipedia link so I can learn more
 
 ## api key and stuff
 
@@ -11,3 +18,11 @@ Client ID:
 77118bd484a78fb99f2bdef0170731aa
 Client secret:
 8746d51cfcacc3f408c1e9495aee715160ef3758
+
+curl -X POST -F 'grant_type=client_credentials' \
+-F 'client_id=77118bd484a78fb99f2bdef0170731aa' \
+-F 'client_secret=8746d51cfcacc3f408c1e9495aee715160ef3758' \
+https://meta.wikimedia.org/w/rest.php/oauth2/access_token
+
+
+eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJjODBjNjdlNzg0MDBkOWRhMmJmNzhlZjBiMDZkMDY1NCIsImp0aSI6IjBjY2Q5NzZmZmFjOWE3MTgzMjYwZmMxNjlkN2RkMWZkZmVlMDUyOGU0NTY1MGM4NWFiY2MyZjk1NDJlYTRhMTU5YzY2N2FlMzdhZWFiMDI0IiwiaWF0IjoxNzAxMTMzMTI1LjY0MzczMywibmJmIjoxNzAxMTMzMTI1LjY0MzczNiwiZXhwIjozMzI1ODA0MTkyNS42NDE5NzUsInN1YiI6Ijc0MzU1NDkyIiwiaXNzIjoiaHR0cHM6Ly9tZXRhLndpa2ltZWRpYS5vcmciLCJyYXRlbGltaXQiOnsicmVxdWVzdHNfcGVyX3VuaXQiOjUwMDAsInVuaXQiOiJIT1VSIn0sInNjb3BlcyI6WyJiYXNpYyJdfQ.D9cJLLO0tSKJLsJvscmqPe2z14pbQyzShVpRSdDe2YbmfRpiReryMA10xDLrAshJfIgOIF8yinWoSwsDOkV5XAennC3ZtWnEQlMoTwlMyfDOCg6i50h6y9suhonvQECnyDYtwvV3y_qUuQkb3CY4dXu3Pvq3_74s9S60xd6rxbNV5XBiYZuObCJVMz6fFttINwzaukP8QPbABe5-zlxltN1C-NdIMuYDl2fDU3OBSigI8HySsZ8EnywOgQhc6VFqoruejyxKx4EbK9Ig8iBpUa89iSkE3faVd9O8LwSamna9kNugpxW6jolJeuNwneQZSnCb5PLpZX3lT6TDqPcm1xdBvMehHfIsTajLxwhTK997JLZGvx1xgpe8LkjeeTpM6PMdevRKPgg4dHVRS-dz_ohuNA7NBQ4HNl81J-5R0ZAUauJuBgHOkOidSUHzHqr-9rFW3STCTRxLjnMHrWkN5KsNI5SzDAJHLSlSvc6uswckZirsnvRZCAsAwmxUzngZXNyMV5cZoCH6vRvira3pSzBLvRelKpqf1T57dhtMRRfBvdwBKk3QOpzmbnkvTLX8-tVsiQI_qTBhRi1EZnsBRd1fy2BNoP0JFnBDDGGUurRhn9V3rjdtngR8mAl-Gar-x-Z86hlYabhUbfBUmLSN5nVFZp8KKDLsMJxeKWHnMVU
