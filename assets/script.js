@@ -1,3 +1,4 @@
+
 var baseWiki = 'https:api.wikimedia.org/core/v1/wikipedia/en/search/page?q=&limit=10';
 var baseUrl = 'https:api.wikimedia.org/core/v1/wikipedia/en/page/bare';
 
@@ -126,3 +127,16 @@ document.getElementById('searchBtn').addEventListener('click', getWiki);
 document.getElementById('searchFld').addEventListener('click', function () {
     document.getElementById('searchFld').value = '';
 })
+
+// this code here is used for the search button
+var searchButton = document.querySelector('#characterSearchForm')
+
+function searchFormSubmit(event) {
+    event.preventDefault();
+
+    var searchInputValue = document.querySelector('#characterSearch').value;
+
+    if (!searchInputValue) {
+        console.error('You need a character to search!');
+        return;
+      }
