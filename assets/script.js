@@ -8,3 +8,20 @@ fetch("https://gateway.marvel.com/v1/public/characters?ts=" + time +  "&apikey=b
 }).then(data => {
     console.log(data);
 })
+
+
+// this code here is used for the search button
+var searchButton = document.querySelector('#characterSearchForm')
+
+function searchFormSubmit(event) {
+    event.preventDefault();
+
+    var searchInputValue = document.querySelector('#characterSearch').value;
+
+    if (!searchInputValue) {
+        console.error('You need a character to search!');
+        return;
+      }
+
+
+}
