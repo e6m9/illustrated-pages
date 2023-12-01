@@ -1,13 +1,12 @@
-
-var baseWiki = 'https:api.wikimedia.org/core/v1/wikipedia/en/search/page?q=&limit=10';
-var baseUrl = 'https:api.wikimedia.org/core/v1/wikipedia/en/page/bare';
-
+var baseWiki = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page?q=&limit=10';
+var baseUrl = 'https://api.wikimedia.org/core/v1/wikipedia/en/page/bare';
 
 // an array to hold search history in localStorage to recall later
 var searchHistory = [];
 var key;
 
-function getWiki() {
+function getWiki(event) {
+    event.preventDefault()
     // grabs the value of searchFld if it isn't blank and puts it into the API urls 
     var searchName = document.getElementById('searchFld').value;
 
@@ -16,7 +15,7 @@ function getWiki() {
     textBody.innerHTML = '';
 
     if (searchName !== '') {
-        var wikiAPI = 'https:api.wikimedia.org/core/v1/wikipedia/en/search/page?q=' + searchName + '&limit=10';
+        var wikiAPI = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page?q=' + searchName + '&limit=10';
 
         // grabs the API response and pulls the important datapoints
         fetch(wikiAPI)
@@ -24,13 +23,19 @@ function getWiki() {
                 return response.json();
             })
             .then(function (data) {
+                console.log(wikiAPI);
                 // checks if the description in the data has "marvel" in it in order to pick out the desired objects and grabs the key data point
+
+                // var superHeader = document.getElementById('supHead');
+                // superHeader.textContent = title;
+
                 var hasMarvel = false;
 
                 for (var i = 0; i < data.pages.length; i++) {
                     var description = data.pages[i].description;
                     console.log(description);
-                    if (description.includes("Marvel")) {
+                    if (description.includes("Marvel" && "Comics")) {
+                        
                         key = data.pages[i].key;
                         hasMarvel = true;
                         break
@@ -53,7 +58,7 @@ function getWiki() {
 // having the key from getWiki, the function is able to display the desired information on the page
 function getURL(key) {
     console.log(key);
-    var urlAPI = 'https:api.wikimedia.org/core/v1/wikipedia/en/page/' + key + '/bare';
+    var urlAPI = 'https://api.wikimedia.org/core/v1/wikipedia/en/page/' + key + '/bare';
 
     fetch(urlAPI)
         .then(response => {
@@ -95,10 +100,12 @@ function updateSearchHistoryDisplay() {
     for (var i = 0; i < searchHistory.length; i++) {
         var searchBtn = document.createElement('button');
         searchBtn.textContent = searchHistory[i];
-        searchBtn.classList.add('btn', 'btn-secondary', 'mb-2');
-        
+        searchBtn.classList.add('btn', 'btn-primary', 'mb-2');
+        searchBtn.style.margin = '5px';
+
         (function (key) {
-            searchBtn.addEventListener('click', function () {
+            searchBtn.addEventListener('click', function (event) {
+                event.preventDefault()
                 var textBody = document.getElementById('textBox');
                 textBody.innerHTML = '';
                 getURL(key);
@@ -114,14 +121,16 @@ function updateSearchHistoryDisplay() {
 document.addEventListener('DOMContentLoaded', function () {
     var storedSearchHistory = localStorage.getItem('searchHistory');
     if (storedSearchHistory) {
-      searchHistory = JSON.parse(storedSearchHistory);
-      updateSearchHistoryDisplay();
+        searchHistory = JSON.parse(storedSearchHistory);
+        updateSearchHistoryDisplay();
     }
-  });
+});
 
 
 // adds event listener to the search button to run getWiki
-document.getElementById('searchBtn').addEventListener('click', getWiki);
+document.getElementById('searchBtn').addEventListener('click', function(event) {
+    getWiki(event);
+});
 
 // adds event listener and function to clear the searchFld on click
 document.getElementById('searchFld').addEventListener('click', function () {
@@ -129,14 +138,15 @@ document.getElementById('searchFld').addEventListener('click', function () {
 })
 
 // this code here is used for the search button
-var searchButton = document.querySelector('#characterSearchForm')
+// var searchButton = document.querySelector('#characterSearchForm')
 
-function searchFormSubmit(event) {
-    event.preventDefault();
+// function searchFormSubmit(event) {
+//     event.preventDefault();
 
-    var searchInputValue = document.querySelector('#characterSearch').value;
+//     var searchInputValue = document.querySelector('#characterSearch').value;
 
-    if (!searchInputValue) {
-        console.error('You need a character to search!');
-        return;
-      }
+//     if (!searchInputValue) {
+//         console.error('You need a character to search!');
+//         return;
+//     }
+// }
