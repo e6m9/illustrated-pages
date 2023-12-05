@@ -1,26 +1,74 @@
-
 var time = new Date().getTime()
 console.log(time)
 
 var hash = CryptoJS.MD5(time + "af2bfa5e8b8999a6887a51f054f4bc539e814945" + "b5cfe2a57cc83be0cb757b07557c487e").toString();
 console.log(hash)
 
-function marvelAPI() {
+// function marvelAPI() {
 
-    fetch("https://gateway.marvel.com/v1/public/characters?ts=" + time + "&apikey=b5cfe2a57cc83be0cb757b07557c487e&hash=" + hash)
-        // fetch(`http://gateway.marvel.com/v1/public/comics?ts=${time}&apikey=b5cfe2a57cc83be0cb757b07557c487e&hash=af2bfa5e8b8999a6887a51f054f4bc539e814945`)
+//     fetch("https://gateway.marvel.com/v1/public/characters?name=" + searchName + "&ts=" + time + "&apikey=b5cfe2a57cc83be0cb757b07557c487e&hash=" + hash)
+//         .then(response => {
+//             return response.json()
+//         })
+//         .then(locRes => {
+//             var marvelApi = "https://gateway.marvel.com/v1/public/characters?name=" + searchName + "&ts=" + time + "&apikey=b5cfe2a57cc83be0cb757b07557c487e&hash=" + hash;
+//             console.log(marvelApi);
+//             console.log(locRes);
+//             var results = locRes.data.results
+//             for (var i = 0; i < results.length; i++) {
+//                 console.log(results[i]);
+//                 var name = results[i].name;
+//                 var description = results[i].description;
+//                 var thumbnail = results[i].thumbnail.path + '.' + results[i].thumbnail.extension;
+//                 var nameContentEl = document.createElement('h3');
+//                 var descriptionContentEl = document.createElement('P');
+//                 var thumbnailImgEl = document.createElement('img');
+//                 var textBody = document.getElementById('textBox');
+//                 textBody.appendChild(nameContentEl);
+//                 nameContentEl.innerText = "name: " + name;
+//                 textBody.appendChild(descriptionContentEl);
+//                 descriptionContentEl.innerText = "description: " + description;
+//                 textBody.appendChild(thumbnailImgEl);
+//                 thumbnailImgEl.src = thumbnail;
+//                 thumbnailImgEl.style.width='50%';
+//             }
+//         })
+// }
+
+// marvelAPI()
+
+var baseWiki = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page?q=&limit=10';
+var baseUrl = 'https://api.wikimedia.org/core/v1/wikipedia/en/page/bare';
+
+// an array to hold search history in localStorage to recall later
+var searchHistory = [];
+var searchName;
+
+//fit this somewhere
+// event.preventDefault()
+// // grabs the value of searchFld if it isn't blank and puts it into the API urls 
+// var searchName = document.getElementById('searchFld').value;
+
+function getData(query) {
+    addSearchToHistory(query);
+    updateSearchHistoryDisplay();
+
+    // grabs the html elements that are populated and then empties them so it can repopulate them
+    var textBody = document.getElementById('textBox');
+    textBody.innerHTML = '';
+
+    fetch("https://gateway.marvel.com/v1/public/characters?nameStartsWith=" + query + "&ts=" + time + "&apikey=b5cfe2a57cc83be0cb757b07557c487e&hash=" + hash)
         .then(response => {
             return response.json()
         })
         .then(locRes => {
-            // resultTextEl.textContent = locRes.search.query;
             console.log(locRes);
             var results = locRes.data.results
 
-            // resultContentEl.textContent = "";
             for (var i = 0; i < results.length; i++) {
                 console.log(results[i]);
-                var name = results[i].name;
+                var name = results[i].name.toLowerCase();
+
                 var description = results[i].description;
                 var thumbnail = results[i].thumbnail.path + '.' + results[i].thumbnail.extension;
                 var nameContentEl = document.createElement('h3');
@@ -33,74 +81,56 @@ function marvelAPI() {
                 descriptionContentEl.innerText = "description: " + description;
                 textBody.appendChild(thumbnailImgEl);
                 thumbnailImgEl.src = thumbnail;
-                thumbnailImgEl.style.width='50%';
+                thumbnailImgEl.style.width = '50%';
 
+                //add a button to run getWiki(name)
+                document.createElement('button')
+                searchBtn.textContent = "get wiki";
+                searchBtn.classList.add('btn', 'btn-success', 'mb-2');
+                searchBtn.style.margin = '5px';
             }
-
         })
 }
 
-marvelAPI()
+function getWiki(query) {
+    var wikiAPI = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page?q=' + query + '&limit=10';
 
-var baseWiki = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page?q=&limit=10';
-var baseUrl = 'https://api.wikimedia.org/core/v1/wikipedia/en/page/bare';
+    // grabs the API response and pulls the important datapoints
+    fetch(wikiAPI)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            console.log(data);
 
-// an array to hold search history in localStorage to recall later
-var searchHistory = [];
-var key;
+            // checks if the description in the data has "marvel" in it in order to pick out the desired objects and grabs the key data point
+            var hasMarvel = false;
 
-function getWiki(event) {
-    event.preventDefault()
-    // grabs the value of searchFld if it isn't blank and puts it into the API urls 
-    var searchName = document.getElementById('searchFld').value;
-
-    // grabs the html elements that are populated and then empties them so it can repopulate them
-    var textBody = document.getElementById('textBox');
-    textBody.innerHTML = '';
-
-    if (searchName !== '') {
-        var wikiAPI = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page?q=' + searchName + '&limit=10';
-
-        // grabs the API response and pulls the important datapoints
-        fetch(wikiAPI)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                console.log(wikiAPI);
-                // checks if the description in the data has "marvel" in it in order to pick out the desired objects and grabs the key data point
-
-                // var superHeader = document.getElementById('supHead');
-                // superHeader.textContent = title;
-
-                var hasMarvel = false;
-
-                for (var i = 0; i < data.pages.length; i++) {
-                    var description = data.pages[i].description;
-                    console.log(description);
-                    if (description.includes("Marvel" && "Comics")) {
-                        
-                        key = data.pages[i].key;
-                        hasMarvel = true;
-                        break
-                    }
+            for (var i = 0; i < data.pages.length; i++) {
+                var description = data.pages[i].description;
+                var key;
+                console.log(description);
+                if (description.includes("Marvel" && "Comics")) {
+                    key = data.pages[i].key;
+                    hasMarvel = true;
+                    break
                 }
-                if (!hasMarvel) {
-                    var noChar = document.createElement('p');
-                    noChar.innerText = 'Unless you misspelled the name, that is not a Marvel Character';
-                    document.getElementById('textBox').appendChild(noChar);
-                } else {
-                    // runs getURL with the acquired key to displayed the desired information and then saves it to a history in localStorage
-                    getURL(key);
-                    addSearchToHistory(key);
-                    updateSearchHistoryDisplay();
-                }
-            });
-    }
+            }
+            if (!hasMarvel) {
+                // make this a modal (so a pop up)
+                // var noChar = document.createElement('p');
+                // noChar.innerText = 'Wiki for this character does not exist';
+                // document.getElementById('textBox').appendChild(noChar);
+            } else {
+                // runs getURL with the acquired key to displayed the desired information and then saves it to a history in localStorage
+                goToWiki(key);
+            }
+        });
 }
 
-// having the key from getWiki, the function is able to display the desired information on the page
-function getURL(key) {
+
+// having the key from getData, the function is able to display the desired information on the page
+function goToWiki(key) {
     console.log(key);
     var urlAPI = 'https://api.wikimedia.org/core/v1/wikipedia/en/page/' + key + '/bare';
 
@@ -110,14 +140,7 @@ function getURL(key) {
         })
         .then(function (data) {
             var url = data.html_url;
-            var textBody = document.getElementById('textBox');
-
-            var link = document.createElement('a');
-
-            link.href = url;
-            link.textContent = "Link to Wikipedia page";
-
-            textBody.appendChild(link);
+            window.open(url, "_blank");
         })
 }
 
@@ -171,9 +194,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// adds event listener to the search button to run getWiki
-document.getElementById('searchBtn').addEventListener('click', function(event) {
-    getWiki(event);
+// adds event listener to the search button to run getData
+document.getElementById('searchBtn').addEventListener('click', function (event) {
+    event.preventDefault()
+    // grabs the value of searchFld if it isn't blank and puts it into the API urls 
+    var searchName = document.getElementById('searchFld').value;
+    getData(searchName);
 });
 
 // adds event listener and function to clear the searchFld on click
