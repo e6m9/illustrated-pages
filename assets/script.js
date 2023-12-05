@@ -25,6 +25,14 @@ function getData(query) {
             console.log(locRes);
             var results = locRes.data.results
 
+            if (locRes.data.total == 0) {
+
+                var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+                    keyboard: true
+                })
+                myModal.show();
+            } else {
+            
             for (var i = 0; i < results.length; i++) {
                 console.log(results[i]);
                 var name = results[i].name.toLowerCase();
@@ -51,6 +59,7 @@ function getData(query) {
                 wikiBtn.setAttribute("data-name", name);
                 textBody.appendChild(wikiBtn);
             }
+        }
         })
 }
 
@@ -80,7 +89,11 @@ function getWiki(query) {
                 }
             }
             if (!hasMarvel) {
-                
+                console.log("showing modal")
+                var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+                    keyboard: true
+                })
+                myModal.show
             } else {
                 // runs getURL with the acquired key to displayed the desired information and then saves it to a history in localStorage
                 goToWiki(key);
