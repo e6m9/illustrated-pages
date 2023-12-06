@@ -8,6 +8,7 @@ var baseWiki = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page?q=&li
 var baseUrl = 'https://api.wikimedia.org/core/v1/wikipedia/en/page/bare';
 
 var searchName;
+var resultContestDisplay = document.querySelector('#textBox')
 
 function getData(query) {
     addSearchToHistory(query);
@@ -32,34 +33,70 @@ function getData(query) {
                 })
                 myModal.show();
             } else {
-            
-            for (var i = 0; i < results.length; i++) {
-                console.log(results[i]);
-                var name = results[i].name.toLowerCase();
 
-                var description = results[i].description;
-                var thumbnail = results[i].thumbnail.path + '.' + results[i].thumbnail.extension;
-                var nameContentEl = document.createElement('h3');
-                var descriptionContentEl = document.createElement('P');
-                var thumbnailImgEl = document.createElement('img');
-                var textBody = document.getElementById('textBox');
-                textBody.appendChild(nameContentEl);
-                nameContentEl.innerText = "name: " + name;
-                textBody.appendChild(descriptionContentEl);
-                descriptionContentEl.innerText = "description: " + description;
-                textBody.appendChild(thumbnailImgEl);
-                thumbnailImgEl.src = thumbnail;
-                thumbnailImgEl.style.width = '50%';
+                for (var i = 0; i < results.length; i++) {
+                    console.log(results[i]);
+                    var name = results[i].name.toLowerCase();
 
-                //add a button to run getWiki(name) by adding an event listener  to the button
-                var wikiBtn = document.createElement('button');
-                wikiBtn.textContent = "check out the Wikipedia page!";
-                wikiBtn.classList.add('btn', 'btn-success', 'mb-2', 'wiki');
-                wikiBtn.style.margin = '5px';
-                wikiBtn.setAttribute("data-name", name);
-                textBody.appendChild(wikiBtn);
+                    var resultCard = document.createElement('div');
+                    resultCard.classList.add('card', 'bg-light', 'text-dark', 'mb-2', 'p-3');
+
+                    var resultBody = document.createElement('div');
+                    resultBody.classList.add('card-body');
+                    resultCard.append(resultBody);
+
+                    var titleEl = document.createElement('h3');
+                    titleEl.textContent = results[i].name;
+
+                    var thumbnail = results[i].thumbnail.path + '.' + results[i].thumbnail.extension;
+                    var thumbnailCard = document.createElement('img')
+                    thumbnailCard.classList.add('float-start')
+                    thumbnailCard.src = thumbnail
+                    thumbnailCard.style.width = '20%'
+
+                    var bodyContentEl = document.createElement('p')
+                    bodyContentEl.classList.add('text-end')
+
+                    if (results[i].description) {
+                        bodyContentEl.innerHTML +=
+                            '<strong>Description:</strong> ' + results[i].description + '<br/>';
+                    } else {
+                        bodyContentEl.innerHTML +=
+                            '<strong>Description:</strong> No description available for this character.';
+                    }
+
+                    var wikiBtn = document.createElement('button');
+                    wikiBtn.textContent = "check out the Wikipedia page!";
+                    wikiBtn.classList.add('btn', 'btn-success', 'mb-2', 'wiki', 'position-absolute', 'bottom-0', 'end-0');
+                    wikiBtn.style.margin = '5px';
+                    wikiBtn.setAttribute("data-name", name);
+                    // textBody.appendChild(wikiBtn);
+    
+                    
+
+
+                    resultBody.append(titleEl, thumbnailCard, bodyContentEl,  wikiBtn)
+
+                    resultContestDisplay.append(resultCard)
+
+                    // var description = results[i].description;
+                    // var thumbnail = results[i].thumbnail.path + '.' + results[i].thumbnail.extension;
+                    // var nameContentEl = document.createElement('h3');
+                    // var descriptionContentEl = document.createElement('P');
+                    // var thumbnailImgEl = document.createElement('img');
+                    // var textBody = document.getElementById('textBox');
+                    // textBody.appendChild(nameContentEl);
+                    // nameContentEl.innerText = "name: " + name;
+                    // textBody.appendChild(descriptionContentEl);
+                    // descriptionContentEl.innerText = "description: " + description;
+                    // textBody.appendChild(thumbnailImgEl);
+                    // thumbnailImgEl.src = thumbnail;
+                    // thumbnailImgEl.style.width = '50%';
+
+                    //add a button to run getWiki(name) by adding an event listener  to the button
+                    
+                }
             }
-        }
         })
 }
 
