@@ -33,6 +33,10 @@ function getData(query) {
                 })
                 myModal.show();
             } else {
+                var resultTextDisplay = document.querySelector('#displayResultsText')
+                var actualResultText = "Displaying Results For:"
+                resultTextDisplay.append(actualResultText)
+
 
                 for (var i = 0; i < results.length; i++) {
                     console.log(results[i]);
@@ -70,31 +74,9 @@ function getData(query) {
                     wikiBtn.classList.add('btn', 'btn-success', 'mb-2', 'wiki', 'position-absolute', 'bottom-0', 'end-0');
                     wikiBtn.style.margin = '5px';
                     wikiBtn.setAttribute("data-name", name);
-                    // textBody.appendChild(wikiBtn);
-    
                     
-
-
-                    resultBody.append(titleEl, thumbnailCard, bodyContentEl,  wikiBtn)
-
+                    resultBody.append(titleEl, thumbnailCard, bodyContentEl, wikiBtn)
                     resultContestDisplay.append(resultCard)
-
-                    // var description = results[i].description;
-                    // var thumbnail = results[i].thumbnail.path + '.' + results[i].thumbnail.extension;
-                    // var nameContentEl = document.createElement('h3');
-                    // var descriptionContentEl = document.createElement('P');
-                    // var thumbnailImgEl = document.createElement('img');
-                    // var textBody = document.getElementById('textBox');
-                    // textBody.appendChild(nameContentEl);
-                    // nameContentEl.innerText = "name: " + name;
-                    // textBody.appendChild(descriptionContentEl);
-                    // descriptionContentEl.innerText = "description: " + description;
-                    // textBody.appendChild(thumbnailImgEl);
-                    // thumbnailImgEl.src = thumbnail;
-                    // thumbnailImgEl.style.width = '50%';
-
-                    //add a button to run getWiki(name) by adding an event listener  to the button
-                    
                 }
             }
         })
