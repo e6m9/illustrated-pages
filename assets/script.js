@@ -33,6 +33,10 @@ function getData(query) {
                 })
                 myModal.show();
             } else {
+                var resultTextDisplay = document.querySelector('#displayResultsText')
+                var actualResultText = "Displaying Results For:"
+                resultTextDisplay.append(actualResultText)
+
 
                 // otherwise the character name, description, thumbnail, and a wikipedia button are pulled and displayed inside textBox
                 for (var i = 0; i < results.length; i++) {
@@ -72,9 +76,13 @@ function getData(query) {
                     wikiBtn.style.margin = '5px';
                     wikiBtn.setAttribute("data-name", name);
 
+
                     resultBody.append(titleEl, thumbnailCard, bodyContentEl, wikiBtn)
 
                     textBody.append(resultCard)
+                    
+                    resultBody.append(titleEl, thumbnailCard, bodyContentEl, wikiBtn)
+                    resultContestDisplay.append(resultCard)
                 }
             }
         })
