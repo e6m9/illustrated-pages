@@ -1,13 +1,17 @@
-# project-one
-group project 1 for bootcamp
+# Illustrated Pages
 
-## description
+## Description
 
-AS a Marvel fan
-I WANT to search for information about any character in the Marvel universe
-so THAT I can learn more about that character
+Web based search application exclusively for characters in the Marvel Universe.
 
-WHEN I go to an app
-THEN there is a search bar and button
-WHEN I enter a search term and click the button
-THEN I am presented with a short bio, first appearance, and image of my search term and a wikipedia link so I can learn more
+## Usage 
+
+To search any Marvel character and be presented with an image, description, and wikipedia page link for that character.
+
+![Illustrated Pages homescreen featuring a search bar and space for results](./assets/screenshots/IP-homescreen.png)
+
+![Illustrated Pages screen with a completed search](./assets/screenshots/IP-searchscreen.png)
+
+![Illustrated Pages screen for when a searched character is not a Marvel character](./assets/screenshots/IP-rejectscreen.png)
+
+[link-to-site](https://e6m9.github.io/illustrated-pages)``
