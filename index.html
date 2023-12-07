@@ -15,14 +15,17 @@
     <title>Comics Encyclopedia</title>
 </head>
 
+<!-- creates header -->
+
 <body class="bg-dark">
     <header style="font-family: bangers;" class="container-fluid bg-danger text-light mb-2 p-3">
         <div class="d-flex align-items-center">
-            <h1>Illustrated Pages Version 1.4 </h1>
+            <h1>Illustrated Pages</h1>
             <h3 class="ms-auto">A Marvel Inspired Search Engine</h3>
         </div>
-
     </header>
+
+    <!-- sets up and allows modal to be displayed -->
     <div id="myModal" class="modal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-danger text-light">
@@ -40,6 +43,7 @@
         </div>
     </div>
 
+    <!-- sets up search bar and results space as columns that sit in a row -->
     <main class="row">
         <div class="col">
             <form id="characterSearchForm" class=" container my-2 col-12 col-md-8 col-lg-9">
@@ -54,18 +58,23 @@
             </form>
         </div>
 
+
+        <div class="col-12 col-md-9 p-3 text-light">
+            <h2>Showing results for:</h2>
         <div class="col-12 col-md-9 p-3 m-2 text-light">
             <h2 id="displayResultsText" style="font-family: bangers;"><span id="result-text"></span></h2>
             <div id="textBox" class=></div>
         </div>
     </main>
 
+    <!-- sewts up the footer -->
     <footer class="container-fluid bg-danger text-light mb-2 p-3">
         <div class="text-center">
             <h4 style="font-family: bangers;">Created By: Andrew Casablanca, Ashley Maximillian, and Michael Salerno
             </h4>
         </div>
     </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
     <script src="./assets/script.js"></script>

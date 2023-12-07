@@ -1,23 +1,22 @@
+// sets a time variable in order to get a timestamp for the marvel api
 var time = new Date().getTime()
 console.log(time)
 
+// creates a hash variabe in order to fetch the marvel api
 var hash = CryptoJS.MD5(time + "af2bfa5e8b8999a6887a51f054f4bc539e814945" + "b5cfe2a57cc83be0cb757b07557c487e").toString();
 console.log(hash)
 
-var baseWiki = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page?q=&limit=10';
-var baseUrl = 'https://api.wikimedia.org/core/v1/wikipedia/en/page/bare';
-
-var searchName;
-var resultContestDisplay = document.querySelector('#textBox')
-
+// this function plugs the time, hash, and search term into the marvel API and displays important information while also generating a modal to state if an invalid search term was entered
 function getData(query) {
+    // immediately checks for and displays any previous search history saved in local storage
     addSearchToHistory(query);
     updateSearchHistoryDisplay();
 
-    // grabs the html elements that are populated and then empties them so it can repopulate them
+    // grabs the html elements that are populated and then empties them so they can be repopulated
     var textBody = document.getElementById('textBox');
     textBody.innerHTML = '';
 
+    // fetches the marvel api
     fetch("https://gateway.marvel.com/v1/public/characters?nameStartsWith=" + query + "&ts=" + time + "&apikey=b5cfe2a57cc83be0cb757b07557c487e&hash=" + hash)
         .then(response => {
             return response.json()
@@ -26,6 +25,7 @@ function getData(query) {
             console.log(locRes);
             var results = locRes.data.results
 
+            // if no data is returned, an error modal is displayed
             if (locRes.data.total == 0) {
 
                 var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
@@ -38,6 +38,7 @@ function getData(query) {
                 resultTextDisplay.append(actualResultText)
 
 
+                // otherwise the character name, description, thumbnail, and a wikipedia button are pulled and displayed inside textBox
                 for (var i = 0; i < results.length; i++) {
                     console.log(results[i]);
                     var name = results[i].name.toLowerCase();
@@ -74,6 +75,11 @@ function getData(query) {
                     wikiBtn.classList.add('btn', 'btn-success', 'mb-2', 'wiki', 'position-absolute', 'bottom-0', 'end-0');
                     wikiBtn.style.margin = '5px';
                     wikiBtn.setAttribute("data-name", name);
+
+
+                    resultBody.append(titleEl, thumbnailCard, bodyContentEl, wikiBtn)
+
+                    textBody.append(resultCard)
                     
                     resultBody.append(titleEl, thumbnailCard, bodyContentEl, wikiBtn)
                     resultContestDisplay.append(resultCard)
@@ -82,10 +88,10 @@ function getData(query) {
         })
 }
 
+// plugs the search term into the wiki api to get the key to be plugged into the second wiki api
 function getWiki(query) {
     var wikiAPI = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page?q=' + query + '&limit=10';
 
-    // grabs the API response and pulls the important datapoints
     fetch(wikiAPI)
         .then(function (response) {
             return response.json();
@@ -93,7 +99,7 @@ function getWiki(query) {
         .then(function (data) {
             console.log(data);
 
-            // checks if the description in the data has "marvel" in it in order to pick out the desired objects and grabs the key data point
+            // checks if the description in the data has "marvel" and "comics" in it in order to pick out the desired objects and grabs the key data point
             var hasMarvel = false;
 
             for (var i = 0; i < data.pages.length; i++) {
@@ -114,14 +120,14 @@ function getWiki(query) {
                 })
                 myModal.show
             } else {
-                // runs getURL with the acquired key to displayed the desired information and then saves it to a history in localStorage
+                // runs goToWiki with the acquired key
                 goToWiki(key);
             }
         });
 }
 
 
-// having the key from getData, the function is able to display the desired information on the page
+// grabs the wikiedia page from the wiki API and allows the page to be opened in a new tab
 function goToWiki(key) {
     console.log(key);
     var urlAPI = 'https://api.wikimedia.org/core/v1/wikipedia/en/page/' + key + '/bare';
@@ -137,7 +143,7 @@ function goToWiki(key) {
         })
 }
 
-// adds searched terms to a history array in order to recall previously searched terms
+// adds the key of the searched terms to localStorage in order to recall later
 function addSearchToHistory(key) {
     var searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
     if (!searchHistory.includes(key)) {
@@ -146,7 +152,7 @@ function addSearchToHistory(key) {
     }
 }
 
-// turns the elements form the search history array into buttons
+// creates buttons from the items in localStorage 
 function updateSearchHistoryDisplay() {
     var historyDiv = document.getElementById('searchHistory');
     historyDiv.innerHTML = '';
@@ -191,6 +197,7 @@ document.getElementById('searchFld').addEventListener('click', function () {
     document.getElementById('searchFld').value = '';
 })
 
+// adds functionality to buttons containing the class 'wiki' and also buttons that contain the class 'search'
 document.addEventListener('click', function (e) {
     e.preventDefault();
     if (e.target.classList.contains('wiki')) {
