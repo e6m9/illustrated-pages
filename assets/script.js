@@ -1,10 +1,10 @@
 // sets a time variable in order to get a timestamp for the marvel api
 var time = new Date().getTime()
-console.log(time)
+
 
 // creates a hash variabe in order to fetch the marvel api
 var hash = CryptoJS.MD5(time + "af2bfa5e8b8999a6887a51f054f4bc539e814945" + "b5cfe2a57cc83be0cb757b07557c487e").toString();
-console.log(hash)
+
 
 // this function plugs the time, hash, and search term into the marvel API and displays important information while also generating a modal to state if an invalid search term was entered
 function getData(query) {
@@ -22,7 +22,7 @@ function getData(query) {
             return response.json()
         })
         .then(locRes => {
-            console.log(locRes);
+           
             var results = locRes.data.results
 
             // if no data is returned, an error modal is displayed
@@ -40,7 +40,7 @@ function getData(query) {
 
                 // otherwise the character name, description, thumbnail, and a wikipedia button are pulled and displayed inside textBox
                 for (var i = 0; i < results.length; i++) {
-                    console.log(results[i]);
+                    
                     var name = results[i].name.toLowerCase();
 
                     var resultCard = document.createElement('div');
@@ -97,7 +97,7 @@ function getWiki(query) {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
+            
 
             // checks if the description in the data has "marvel" and "comics" in it in order to pick out the desired objects and grabs the key data point
             var hasMarvel = false;
@@ -105,7 +105,7 @@ function getWiki(query) {
             for (var i = 0; i < data.pages.length; i++) {
                 var description = data.pages[i].description;
                 var key;
-                console.log(description);
+                
                 if (description.includes("Marvel") && description.includes("Comics")) {
                     key = data.pages[i].key;
                     console.log(key);
@@ -114,7 +114,7 @@ function getWiki(query) {
                 }
             }
             if (!hasMarvel) {
-                console.log("showing modal")
+                
                 var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
                     keyboard: true
                 })
@@ -129,7 +129,7 @@ function getWiki(query) {
 
 // grabs the wikiedia page from the wiki API and allows the page to be opened in a new tab
 function goToWiki(key) {
-    console.log(key);
+    
     var urlAPI = 'https://api.wikimedia.org/core/v1/wikipedia/en/page/' + key + '/bare';
 
     fetch(urlAPI)
@@ -137,7 +137,7 @@ function goToWiki(key) {
             return response.json()
         })
         .then(function (data) {
-            console.log(urlAPI);
+            
             var url = data.html_url;
             window.open(url, "_blank");
         })
