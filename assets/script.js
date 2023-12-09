@@ -8,13 +8,13 @@ console.log(hash)
 
 // this function plugs the time, hash, and search term into the marvel API and displays important information while also generating a modal to state if an invalid search term was entered
 function getData(query) {
-    // immediately checks for and displays any previous search history saved in local storage
-    addSearchToHistory(query);
     updateSearchHistoryDisplay();
 
     // grabs the html elements that are populated and then empties them so they can be repopulated
     var textBody = document.getElementById('textBox');
     textBody.innerHTML = '';
+    var resultTextDisplay = document.getElementById('displayResultsText');
+    resultTextDisplay.innerHTML = '';
 
     // fetches the marvel api
     fetch("https://gateway.marvel.com/v1/public/characters?nameStartsWith=" + query + "&ts=" + time + "&apikey=b5cfe2a57cc83be0cb757b07557c487e&hash=" + hash)
@@ -33,10 +33,8 @@ function getData(query) {
                 })
                 myModal.show();
             } else {
-                var resultTextDisplay = document.querySelector('#displayResultsText')
-                var actualResultText = "Displaying Results For:"
-                resultTextDisplay.append(actualResultText)
-
+                addSearchToHistory(query);
+                resultTextDisplay.textContent = "Displaying Results For:"
 
                 // otherwise the character name, description, thumbnail, and a wikipedia button are pulled and displayed inside textBox
                 for (var i = 0; i < results.length; i++) {
@@ -76,13 +74,12 @@ function getData(query) {
                     wikiBtn.style.margin = '5px';
                     wikiBtn.setAttribute("data-name", name);
 
-
                     resultBody.append(titleEl, thumbnailCard, bodyContentEl, wikiBtn)
 
                     textBody.append(resultCard)
-                    
+
                     resultBody.append(titleEl, thumbnailCard, bodyContentEl, wikiBtn)
-                    resultContestDisplay.append(resultCard)
+                    textBody.append(resultCard)
                 }
             }
         })
@@ -162,7 +159,6 @@ function updateSearchHistoryDisplay() {
     var historyContainer = document.createElement('div');
     historyContainer.classList.add('mt-2');
 
-
     for (var i = 0; i < searchHistory.length; i++) {
         var searchBtn = document.createElement('button');
         searchBtn.textContent = searchHistory[i];
@@ -182,7 +178,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateSearchHistoryDisplay();
     }
 });
-
 
 // adds event listener to the search button to run getData
 document.getElementById('searchBtn').addEventListener('click', function (event) {

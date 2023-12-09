@@ -2,7 +2,7 @@
 
 ## Description
 
-Web based search application exclusively for characters in the Marvel Universe.
+Web based search application exclusively for characters in the Marvel Universe using the Marvel API and Wikipedia APi.
 
 ## Usage 
 
